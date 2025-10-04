@@ -1,5 +1,6 @@
 import { MainStackParamList } from '@/src/navigation/mainStack';
 import ScreenNames from '@/src/navigation/ScreenNames';
+import StackNames from '@/src/navigation/StackNames';
 import { get } from '@/src/utils/helpers/apiService';
 import { NavigationProp, useNavigation } from '@react-navigation/native';
 import React, { useEffect } from 'react';
@@ -34,7 +35,7 @@ import styles from './styles';
 
 export default function MainNews() {
     const [news, setNews] = React.useState([]);
-    const { navigate } = useNavigation<NavigationProp<MainStackParamList, ScreenNames.Home>>();
+    const { navigate } = useNavigation<NavigationProp<MainStackParamList>>();
     function getTopNews() {
         const url = "/top-headlines?country=us";
 
@@ -58,7 +59,14 @@ export default function MainNews() {
 
     function renderNews(item: ArticleType) {
         return (
-            <TouchableOpacity onPress={() => navigate(ScreenNames.ArticleDetails, { article: item })}>
+            <TouchableOpacity onPress={
+                () => navigate(StackNames.SharedStack,
+                    {
+                        screen: ScreenNames.ArticleDetails,
+                        params: { article: item }
+                    }
+                )}
+            >
                 <ImageBackground
                     source={{
                         uri: item.urlToImage,

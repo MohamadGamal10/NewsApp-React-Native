@@ -6,10 +6,11 @@ import { useEffect, useState } from 'react';
 import { FlatList, Image, Text, TouchableOpacity, View } from 'react-native';
 import { ArticleType } from '../types/types';
 import styles from './styles';
+import StackNames from '@/src/navigation/StackNames';
 
 export default function TopNews() {
   const [articles, setArticles] = useState<ArticleType[]>([]);
-  const { navigate } = useNavigation<NavigationProp<MainStackParamList, ScreenNames.Home>>();
+  const { navigate } = useNavigation<NavigationProp<MainStackParamList>>();
 
   useEffect(() => {
     const url = "/everything?q=egypt";
@@ -29,7 +30,13 @@ export default function TopNews() {
       <FlatList
         data={articles}
         renderItem={({ item }) => (
-          <TouchableOpacity onPress={() => navigate(ScreenNames.ArticleDetails, { article: item })} style={styles.cardCount}>
+          <TouchableOpacity onPress={
+            () => navigate(StackNames.SharedStack,
+              {
+                screen: ScreenNames.ArticleDetails,
+                params: { article: item }
+              }
+            )} style={styles.cardCount}>
             <Image style={styles.cardArticleImage} source={{ uri: item.urlToImage }} />
             <Text style={styles.cardArticleName}>{item.title}</Text>
           </TouchableOpacity>
