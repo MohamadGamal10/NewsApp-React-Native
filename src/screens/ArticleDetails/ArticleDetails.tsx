@@ -6,12 +6,15 @@ import React from 'react';
 import { Image, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import styles from './styles';
+import useFavStore from '@/src/store/useFavStore';
 
 export default function ArticleDetails() {
     const { goBack } = useNavigation();
     const { params } = useRoute<RouteProp<MainStackParamList, ScreenNames.ArticleDetails>>();
-    const { article } = params ?? {};
+    const { article }: any = params ?? {};
     const { title, description, urlToImage, source } = article ?? {};
+
+    const { addToFavList } = useFavStore();
 
     return (
         <SafeAreaView style={styles.safeContainer}>
@@ -35,7 +38,7 @@ export default function ArticleDetails() {
             <TouchableOpacity
                 style={styles.addTofavBtn}
                 onPress={() => {
-                    //   addToFavList(article);
+                      addToFavList(article);
                 }}>
                 <Text style={styles.addToFavText}>Add To Fav</Text>
             </TouchableOpacity>
